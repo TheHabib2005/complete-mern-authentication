@@ -3,10 +3,12 @@ import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import UpdateUserPopup from './UpdateUserPopup';
 
 const Profile = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [userInfo, setUserInfo] = useState(null);
+    const [isOpen, setIsOpen] = useState(false)
     const token = jwtDecode(localStorage.getItem("auth-token")).token;
     const navigate = useNavigate();
     const logout = () => {
@@ -58,17 +60,20 @@ const Profile = () => {
 
             {
                 userInfo &&
-                <div>Profile :
+                <div>
 
-                    <img src={userInfo.profileImage} alt="" />
+                    <h1>user details</h1>
+
+                    <img src={userInfo.profileImage} alt="" width={100} />
                     <div>username:{userInfo.username}</div>
                     <div>email:{userInfo.email}</div>
+                    <button onClick={() => setIsOpen(!isOpen)}>update info</button>
                     <button onClick={logout
                     }>Logout</button>
                 </div>
 
             }
-            hello mr
+            {isOpen && <UpdateUserPopup isOpen={isOpen} setIsOpen={setIsOpen} userInfo={userInfo} />}
         </>
     )
 }
